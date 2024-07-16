@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.zhukew.subject.common.enums.CategoryTypeEnum;
 import com.zhukew.subject.common.enums.IsDeletedFlagEnum;
 import com.zhukew.subject.domain.convert.SubjectLabelConverter;
-import com.zhukew.subject.domain.convert.SubjectLabelConverterImpl;
 import com.zhukew.subject.domain.entity.SubjectLabelBO;
 import com.zhukew.subject.domain.service.SubjectLabelDomainService;
 import com.zhukew.subject.infra.basic.entity.SubjectCategory;

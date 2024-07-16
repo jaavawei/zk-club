@@ -5,6 +5,11 @@ import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.sort.SortOrder;
 
+/**
+* Es搜索请求类
+*
+* @auther: Wei
+*/
 @Data
 public class EsSearchRequest {
 

@@ -27,10 +27,18 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
+/**
+* EsService实现类
+*
+* @auther: Wei
+*/
 @Service
 @Slf4j
 public class SubjectEsServiceImpl implements SubjectEsService {
 
+    /**
+    * 插入数据
+    */
     @Override
     public boolean insert(SubjectInfoEs subjectInfoEs) {
         EsSourceData esSourceData = new EsSourceData();
@@ -40,6 +48,9 @@ public class SubjectEsServiceImpl implements SubjectEsService {
         return EsRestClient.insertDoc(getEsIndexInfo(), esSourceData);
     }
 
+    /**
+    * 处理 exMapping（组装Fields）
+    */
     private Map<String, Object> convert2EsSourceData(SubjectInfoEs subjectInfoEs) {
         Map<String, Object> data = new HashMap<>();
         data.put(EsSubjectFields.SUBJECT_ID, subjectInfoEs.getSubjectId());
@@ -52,6 +63,9 @@ public class SubjectEsServiceImpl implements SubjectEsService {
         return data;
     }
 
+    /**
+    * 查询题目列表
+    */
     @Override
     public PageResult<SubjectInfoEs> querySubjectList(SubjectInfoEs req) {
         PageResult<SubjectInfoEs> pageResult = new PageResult<>();
@@ -81,6 +95,9 @@ public class SubjectEsServiceImpl implements SubjectEsService {
         return pageResult;
     }
 
+    /**
+    * 处理查询返回结果
+    */
     private SubjectInfoEs convertResult(SearchHit hit) {
         Map<String, Object> sourceAsMap = hit.getSourceAsMap();
         if (CollectionUtils.isEmpty(sourceAsMap)) {
@@ -97,7 +114,7 @@ public class SubjectEsServiceImpl implements SubjectEsService {
         result.setScore(new BigDecimal(String.valueOf(hit.getScore())).multiply(new BigDecimal("100.00")
                 .setScale(2, RoundingMode.HALF_UP)));
 
-        //处理name的高亮
+        // 处理 name 高亮
         Map<String, HighlightField> highlightFields = hit.getHighlightFields();
         HighlightField subjectNameField = highlightFields.get(EsSubjectFields.SUBJECT_NAME);
         if(Objects.nonNull(subjectNameField)){
@@ -109,7 +126,7 @@ public class SubjectEsServiceImpl implements SubjectEsService {
             result.setSubjectName(subjectNameBuilder.toString());
         }
 
-        //处理答案高亮
+        // 处理 答案 高亮
         HighlightField subjectAnswerField = highlightFields.get(EsSubjectFields.SUBJECT_ANSWER);
         if(Objects.nonNull(subjectAnswerField)){
             Text[] fragments = subjectAnswerField.getFragments();
@@ -123,6 +140,9 @@ public class SubjectEsServiceImpl implements SubjectEsService {
         return result;
     }
 
+    /**
+    * 构建 Es 查询请求
+    */
     private EsSearchRequest createSearchListQuery(SubjectInfoEs req) {
         EsSearchRequest esSearchRequest = new EsSearchRequest();
         BoolQueryBuilder bq = new BoolQueryBuilder();
@@ -154,6 +174,9 @@ public class SubjectEsServiceImpl implements SubjectEsService {
         return esSearchRequest;
     }
 
+    /**
+    * 获取 index 信息
+    */
     private EsIndexInfo getEsIndexInfo() {
         EsIndexInfo esIndexInfo = new EsIndexInfo();
         esIndexInfo.setClusterName("73438a827b55");

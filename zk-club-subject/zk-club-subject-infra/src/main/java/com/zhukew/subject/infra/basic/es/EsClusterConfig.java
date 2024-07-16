@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * es集群类
+ * Es集群类
  * 
  * @author: Wei
  * @date: 2023/12/17

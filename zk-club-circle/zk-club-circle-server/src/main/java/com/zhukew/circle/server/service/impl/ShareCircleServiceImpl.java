@@ -48,6 +48,7 @@ public class ShareCircleServiceImpl extends ServiceImpl<ShareCircleMapper, Share
     public List<ShareCircleVO> listResult() {
         // 从父到子，按树状返回
         List<ShareCircleVO> res = CACHE.getIfPresent(1);
+        // 如果缓存中没有再从数据库查询
         return Optional.ofNullable(res).orElseGet(() -> {
             List<ShareCircle> list = super.list(Wrappers.<ShareCircle>lambdaQuery().eq(ShareCircle::getIsDeleted, IsDeletedFlagEnum.UN_DELETED.getCode()));
             // 先过滤出最父级的圈子

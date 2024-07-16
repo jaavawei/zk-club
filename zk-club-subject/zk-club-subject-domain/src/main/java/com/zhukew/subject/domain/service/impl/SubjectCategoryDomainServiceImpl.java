@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +98,9 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
     @Override
     public List<SubjectCategoryBO> queryCategoryAndLabel(SubjectCategoryBO subjectCategoryBO) {
         Long id = subjectCategoryBO.getId();
+        // 前端初始化界面展示的分类和标签需要经常利用多线程查询，浪费资源
+        // 其实这些分类和标签很少发生变化，将其存入 Caffeine 本地缓存中
+        // 后续现在本地缓存中查找，如果没有，再调用接口查找
         String cacheKey = "categoryAndLabel." + subjectCategoryBO.getId();
         List<SubjectCategoryBO> subjectCategoryBOS = cacheUtil.getResult(cacheKey,
                 SubjectCategoryBO.class, (key) -> getSubjectCategoryBOS(id));

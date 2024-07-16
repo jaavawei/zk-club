@@ -40,18 +40,30 @@ import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.*;
 
+/**
+* EsClient实现
+*
+* @auther: Wei
+*/
 @Component
 @Slf4j
 public class EsRestClient {
 
+    /**
+    * esClientName: Client
+    */
     public static Map<String, RestHighLevelClient> clientMap = new HashMap<>();
 
+    /**
+    * es集群配置信息，集群名：nodes
+    */
     @Resource
     private EsConfigProperties esConfigProperties;
 
     private static final RequestOptions COMMON_OPTIONS;
 
     static {
+        // 初始化静态常量 COMMON_OPTIONS
         RequestOptions.Builder builder = RequestOptions.DEFAULT.toBuilder();
         COMMON_OPTIONS = builder.build();
     }
@@ -61,6 +73,7 @@ public class EsRestClient {
         List<EsClusterConfig> esConfigs = esConfigProperties.getEsConfigs();
         for (EsClusterConfig esConfig : esConfigs) {
             log.info("initialize.config.name:{},node:{}", esConfig.getName(), esConfig.getNodes());
+            // 根据配置生成 client，并填入 map
             RestHighLevelClient restHighLevelClient = initRestClient(esConfig);
             if (restHighLevelClient != null) {
                 clientMap.put(esConfig.getName(), restHighLevelClient);
@@ -70,8 +83,13 @@ public class EsRestClient {
         }
     }
 
+    /**
+    * 根据配置信息初始化 client
+    */
     private RestHighLevelClient initRestClient(EsClusterConfig esClusterConfig) {
+        // 获取集群节点
         String[] ipPortArr = esClusterConfig.getNodes().split(",");
+        // client 实质为 http 连接
         List<HttpHost> httpHostList = new ArrayList<>(ipPortArr.length);
         for (String ipPort : ipPortArr) {
             String[] ipPortInfo = ipPort.split(":");
@@ -88,10 +106,16 @@ public class EsRestClient {
         return restHighLevelClient;
     }
 
+    /**
+    * 获取client
+    */
     private static RestHighLevelClient getClient(String clusterName) {
         return clientMap.get(clusterName);
     }
 
+    /**
+    * 存储doc
+    */
     public static boolean insertDoc(EsIndexInfo esIndexInfo, EsSourceData esSourceData) {
         try {
             IndexRequest indexRequest = new IndexRequest(esIndexInfo.getIndexName());
@@ -105,6 +129,9 @@ public class EsRestClient {
         return false;
     }
 
+    /**
+    * 更新doc
+    */
     public static boolean updateDoc(EsIndexInfo esIndexInfo, EsSourceData esSourceData) {
         try {
             UpdateRequest updateRequest = new UpdateRequest();
@@ -119,6 +146,9 @@ public class EsRestClient {
         return false;
     }
 
+    /**
+    * 批量更新doc
+    */
     public static boolean batchUpdateDoc(EsIndexInfo esIndexInfo,
                                          List<EsSourceData> esSourceDataList) {
         try {
@@ -150,6 +180,9 @@ public class EsRestClient {
         return false;
     }
 
+    /**
+    * 删除index
+    */
     public static boolean delete(EsIndexInfo esIndexInfo) {
         try {
             DeleteByQueryRequest deleteByQueryRequest =
@@ -167,6 +200,9 @@ public class EsRestClient {
         return false;
     }
 
+    /**
+    * 删除doc
+    */
     public static boolean deleteDoc(EsIndexInfo esIndexInfo, String docId) {
         try {
             DeleteRequest deleteRequest = new DeleteRequest(esIndexInfo.getIndexName());
@@ -180,6 +216,9 @@ public class EsRestClient {
         return false;
     }
 
+    /**
+    * 查找 doc 是否存在
+    */
     public static boolean isExistDocById(EsIndexInfo esIndexInfo, String docId) {
         try {
             GetRequest getRequest = new GetRequest(esIndexInfo.getIndexName());
@@ -191,6 +230,9 @@ public class EsRestClient {
         return false;
     }
 
+    /**
+    * 根据 id 查找 doc
+    */
     public static Map<String, Object> getDocById(EsIndexInfo esIndexInfo, String docId) {
         try {
             GetRequest getRequest = new GetRequest(esIndexInfo.getIndexName());
@@ -204,6 +246,9 @@ public class EsRestClient {
         return null;
     }
 
+    /**
+    * 根据条件查找 doc
+    */
     public static Map<String, Object> getDocById(EsIndexInfo esIndexInfo, String docId,
                                                  String[] fields) {
         try {
@@ -221,6 +266,9 @@ public class EsRestClient {
     }
 
 
+    /**
+    * 根据特定条件查询
+    */
     public static SearchResponse searchWithTermQuery(EsIndexInfo esIndexInfo,
                                                      EsSearchRequest esSearchRequest) {
         try {
@@ -263,6 +311,9 @@ public class EsRestClient {
         return null;
     }
 
+    /**
+    * 批量插入 doc
+    */
     public static boolean batchInsertDoc(EsIndexInfo esIndexInfo, List<EsSourceData> esSourceDataList) {
         if (log.isInfoEnabled()) {
             log.info("批量新增ES:" + esSourceDataList.size());
@@ -297,6 +348,9 @@ public class EsRestClient {
         return true;
     }
 
+    /**
+    * 根据传入的 Query 更新
+    */
     public static boolean updateByQuery(EsIndexInfo esIndexInfo, QueryBuilder queryBuilder, Script script, int batchSize) {
         if (log.isInfoEnabled()) {
             log.info("updateByQuery.indexName:" + esIndexInfo.getIndexName());
