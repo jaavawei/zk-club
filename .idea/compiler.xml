@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="zk-club-interview-api" />
+        <module name="easy-gen-code-spring-boot-starter" />
+        <module name="asyncTool" />
+        <module name="zk-club-subject-api" />
+        <module name="zk-club-gateway" />
+        <module name="zk-club-practice-server" />
+        <module name="zk-club-circle-server" />
+        <module name="zk-club-subject-infra" />
+        <module name="zk-club-subject-domain" />
+        <module name="zk-club-auth-starter" />
+        <module name="zk-club-auth-common" />
+        <module name="zk-club-subject-application-mq" />
+        <module name="zk-club-oss" />
+        <module name="zk-club-auth-api" />
+        <module name="zk-club-gen" />
+        <module name="zk-club-circle-api" />
+        <module name="zk-club-wx" />
+        <module name="zk-club-auth-infra" />
+        <module name="zk-club-auth-domain" />
+        <module name="zk-club-auth-application-controller" />
+        <module name="zk-club-practice-api" />
+        <module name="zk-club-subject-application-controller" />
+        <module name="zk-club-subject-starter" />
+        <module name="zk-club-subject-application-job" />
+        <module name="zk-club-interview-server" />
+        <module name="zk-club-subject-common" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="zk-club-auth-application-job" target="8" />
+      <module name="zk-club-auth-application-mq" target="8" />
+    </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="zk-club-gen" options="-parameters" />
+    </option>
+  </component>
+</project>

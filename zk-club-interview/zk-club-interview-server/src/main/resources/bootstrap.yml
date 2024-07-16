@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: zk-club-interview-dev
+  profiles:
+    active: dev
+  cloud:
+    nacos:
+      config:
+        server-addr: 117.72.10.84:8848
+        prefix: ${spring.application.name}
+        group: DEFAULT_GROUP
+        namespace:
+        file-extension: yaml
+      discovery:
+        enabled: true
+        server-addr: 117.72.10.84:8848

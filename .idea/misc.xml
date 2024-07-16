@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ExternalStorageConfigurationManager" enabled="true" />
+  <component name="MavenProjectsManager">
+    <option name="originalFiles">
+      <list>
+        <option value="$PROJECT_DIR$/zk-club-auth/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-subject/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-wx/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-practice/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-oss/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-interview/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-gen/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-common-starter/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-circle/pom.xml" />
+        <option value="$PROJECT_DIR$/asyncTool/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-auth/zk-club-auth-api/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-auth/zk-club-auth-application/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-auth/zk-club-auth-common/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-auth/zk-club-auth-domain/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-auth/zk-club-auth-infra/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-auth/zk-club-auth-starter/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-auth/zk-club-auth-application/zk-club-auth-application-controller/pom.xml" />
+      </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/zk-club-auth/zk-club-auth-application/zk-club-auth-application-job/pom.xml" />
+        <option value="$PROJECT_DIR$/zk-club-auth/zk-club-auth-application/zk-club-auth-application-mq/pom.xml" />
+      </set>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="corretto-1.8" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/out" />
+  </component>
+</project>

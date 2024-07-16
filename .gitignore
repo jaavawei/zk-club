@@ -1,0 +1,5 @@
+# Project exclude paths
+/asyncTool/target/
+/zk-club-common-starter/easy-gen-code-spring-boot-starter/target/
+/zk-club-gen/target/
+/zk-club-oss/target/
