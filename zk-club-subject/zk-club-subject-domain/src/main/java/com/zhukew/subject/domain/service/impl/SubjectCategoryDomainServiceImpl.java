@@ -107,6 +107,9 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
         return subjectCategoryBOS;
     }
 
+    /**
+     * 本地缓存查询失败后调用该方法多线程并发查询
+     */
     private List<SubjectCategoryBO> getSubjectCategoryBOS(Long categoryId) {
         SubjectCategory subjectCategory = new SubjectCategory();
         subjectCategory.setParentId(categoryId);
@@ -117,20 +120,29 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
                     JSON.toJSONString(subjectCategoryList));
         }
         List<SubjectCategoryBO> categoryBOList = SubjectCategoryConverter.INSTANCE.convertBoToCategory(subjectCategoryList);
+        // 分类ID ： 标签List
         Map<Long, List<SubjectLabelBO>> map = new HashMap<>();
+        // 利用 CompletableFuture对每个标签进行并发查询
         List<CompletableFuture<Map<Long, List<SubjectLabelBO>>>> completableFutureList = categoryBOList.stream().map(category ->
                 CompletableFuture.supplyAsync(() -> getLabelBOList(category), labelThreadPool)
         ).collect(Collectors.toList());
-        completableFutureList.forEach(future -> {
-            try {
-                Map<Long, List<SubjectLabelBO>> resultMap = future.get();
-                if (!MapUtils.isEmpty(resultMap)) {
-                    map.putAll(resultMap);
+        // 等待所有 CompletableFuture 完成
+        CompletableFuture<Void> allFutures = CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[0]));
+        // 当所有 CompletableFuture 完成后处理结果
+        allFutures.thenRun(() -> {
+            // 拿到每个 CompletableFuture 的查询结果，并合并到 map 中。
+            completableFutureList.forEach(future -> {
+                try {
+                    Map<Long, List<SubjectLabelBO>> resultMap = future.get();
+                    if (!MapUtils.isEmpty(resultMap)) {
+                        map.putAll(resultMap);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
+            });
+        }).join(); // 阻塞等待所有任务完成
+        // 将 map 中的 查询结果组装到 categoryBOList 中
         categoryBOList.forEach(categoryBO -> {
             if (!CollectionUtils.isEmpty(map.get(categoryBO.getId()))) {
                 categoryBO.setLabelBOList(map.get(categoryBO.getId()));
