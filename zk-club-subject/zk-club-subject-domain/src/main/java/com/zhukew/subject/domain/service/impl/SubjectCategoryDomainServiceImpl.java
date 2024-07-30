@@ -120,16 +120,14 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
                     JSON.toJSONString(subjectCategoryList));
         }
         List<SubjectCategoryBO> categoryBOList = SubjectCategoryConverter.INSTANCE.convertBoToCategory(subjectCategoryList);
-        // 分类ID ： 标签List
+        // 分类ID ：标签List
         Map<Long, List<SubjectLabelBO>> map = new HashMap<>();
         // 利用 CompletableFuture对每个标签进行并发查询
         List<CompletableFuture<Map<Long, List<SubjectLabelBO>>>> completableFutureList = categoryBOList.stream().map(category ->
                 CompletableFuture.supplyAsync(() -> getLabelBOList(category), labelThreadPool)
         ).collect(Collectors.toList());
-        // 等待所有 CompletableFuture 完成
-        CompletableFuture<Void> allFutures = CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[0]));
-        // 当所有 CompletableFuture 完成后处理结果
-        allFutures.thenRun(() -> {
+        // 等待所有 CompletableFuture 完成后汇总查询结果
+        CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[0])).thenRun(() -> {
             // 拿到每个 CompletableFuture 的查询结果，并合并到 map 中。
             completableFutureList.forEach(future -> {
                 try {
@@ -150,7 +148,7 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
         });
         return categoryBOList;
     }
-
+    
     private Map<Long, List<SubjectLabelBO>> getLabelBOList(SubjectCategoryBO category) {
         if (log.isInfoEnabled()) {
             log.info("getLabelBOList:{}", JSON.toJSONString(category));

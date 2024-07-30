@@ -21,8 +21,10 @@ public class FeignRequestInterceptor implements RequestInterceptor {
 
     @Override
     public void apply(RequestTemplate requestTemplate) {
+        // 拿到原始请求
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = requestAttributes.getRequest();
+        // 将 loginId 放入新请求中
         if (Objects.nonNull(request)) {
             String loginId = request.getHeader("loginId");
             if (StringUtils.isNotBlank(loginId)) {
