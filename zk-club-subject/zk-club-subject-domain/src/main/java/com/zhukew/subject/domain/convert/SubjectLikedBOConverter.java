@@ -1,6 +1,7 @@
 package com.zhukew.subject.domain.convert;
 
 import com.zhukew.subject.domain.entity.SubjectLikedBO;
+import com.zhukew.subject.domain.entity.SubjectLikedMessage;
 import com.zhukew.subject.infra.basic.entity.SubjectLiked;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
@@ -22,4 +23,5 @@ public interface SubjectLikedBOConverter {
 
     List<SubjectLikedBO> convertListInfoToBO(List<SubjectLiked> subjectLikedList);
 
+    SubjectLikedBO convertMessageToBO(SubjectLikedMessage subjectLikedMessage);
 }

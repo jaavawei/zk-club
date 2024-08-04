@@ -5,8 +5,10 @@ import com.google.common.base.Preconditions;
 import com.zhukew.subject.application.convert.SubjectAnswerDTOConverter;
 import com.zhukew.subject.application.convert.SubjectInfoDTOConverter;
 import com.zhukew.subject.application.dto.SubjectInfoDTO;
+import com.zhukew.subject.application.mq.transaction.SubjectAddTransactionProducer;
 import com.zhukew.subject.common.entity.PageResult;
 import com.zhukew.subject.common.entity.Result;
+import com.zhukew.subject.common.enums.OrderTopicEnum;
 import com.zhukew.subject.domain.entity.SubjectAnswerBO;
 import com.zhukew.subject.domain.entity.SubjectInfoBO;
 import com.zhukew.subject.domain.service.SubjectInfoDomainService;
@@ -14,7 +16,11 @@ import com.zhukew.subject.infra.basic.entity.SubjectInfoEs;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.annotations.Param;
+import org.apache.rocketmq.client.producer.SendResult;
+import org.apache.rocketmq.client.producer.SendStatus;
+import org.apache.rocketmq.client.producer.TransactionSendResult;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
+import org.apache.rocketmq.common.message.Message;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * 刷题controller
@@ -41,6 +48,9 @@ public class SubjectController {
     @Resource
     private RocketMQTemplate rocketMQTemplate;
 
+    @Resource
+    private SubjectAddTransactionProducer subjectAddTransactionProducer;
+
     /**
      * 新增题目
      */
@@ -50,6 +60,8 @@ public class SubjectController {
             if (log.isInfoEnabled()) {
                 log.info("SubjectController.add.dto:{}", JSON.toJSONString(subjectInfoDTO));
             }
+
+            // 参数校验
             Preconditions.checkArgument(!StringUtils.isBlank(subjectInfoDTO.getSubjectName()),
                     "题目名称不能为空");
             Preconditions.checkNotNull(subjectInfoDTO.getSubjectDifficult(), "题目难度不能为空");
@@ -60,12 +72,22 @@ public class SubjectController {
             Preconditions.checkArgument(!CollectionUtils.isEmpty(subjectInfoDTO.getLabelIds())
                     , "标签id不能为空");
 
+            // 转 DTO 为 BO
             SubjectInfoBO subjectInfoBO = SubjectInfoDTOConverter.INSTANCE.convertDTOToBO(subjectInfoDTO);
             List<SubjectAnswerBO> subjectAnswerBOS =
                     SubjectAnswerDTOConverter.INSTANCE.convertListDTOToBO(subjectInfoDTO.getOptionList());
             subjectInfoBO.setOptionList(subjectAnswerBOS);
-            subjectInfoDomainService.add(subjectInfoBO);
-            return Result.ok(true);
+
+            //通过 uuid 当 key，保证消息的幂等性
+            String uuid = UUID.randomUUID().toString().replace("_", "");
+            // 封装 message
+            Message message = new Message(OrderTopicEnum.SUBJECT_ADD.getTopic(), null, uuid, JSON.toJSONString(subjectInfoBO).getBytes());
+            // 使用 RocketMq 的事务保证数据一致性，本地方法在 Listener 中执行。
+            SendResult sendResult = subjectAddTransactionProducer.getProducer().sendMessageInTransaction(message, 1);
+            if (SendStatus.SEND_OK == sendResult.getSendStatus()) {
+                return Result.ok(true);
+            }
+            return Result.fail("新增题目失败");
         } catch (Exception e) {
             log.error("SubjectCategoryController.add.error:{}", e.getMessage(), e);
             return Result.fail("新增题目失败");
@@ -149,15 +171,5 @@ public class SubjectController {
             return Result.fail("获取贡献榜失败");
         }
     }
-
-    /**
-     * 测试mq发送
-     */
-    @PostMapping("/pushMessage")
-    public Result<Boolean> pushMessage(@Param("id") int id) {
-        rocketMQTemplate.convertAndSend("test-topic", "猪客早上好" + id);
-        return Result.ok(true);
-    }
-
 
 }

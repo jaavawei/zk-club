@@ -29,5 +29,10 @@ public class SubjectLikedMessage implements Serializable {
      */
     private Integer status;
 
+    /**
+     * message 唯一 id
+     */
+    private String id;
+
 }
 

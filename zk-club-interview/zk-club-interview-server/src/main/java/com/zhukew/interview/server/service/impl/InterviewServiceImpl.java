@@ -25,6 +25,9 @@ import java.util.stream.Collectors;
 @Service
 public class InterviewServiceImpl implements InterviewService, ApplicationContextAware {
 
+    /**
+     * 引擎map，根据引擎名选取引擎
+     */
     private static final Map<String, InterviewEngine> engineMap = new HashMap<>();
 
     @Resource
@@ -32,8 +35,7 @@ public class InterviewServiceImpl implements InterviewService, ApplicationContex
 
 
     /**
-     * 实现 ApplicationContextAware 接口
-     * 在项目启动时，封装 engineMap
+     * 封装 engineMap
      */
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

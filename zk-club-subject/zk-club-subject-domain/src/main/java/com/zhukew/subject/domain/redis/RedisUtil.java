@@ -166,6 +166,13 @@ public class RedisUtil {
     public void putHash(String key, String hashKey, Object hashVal) {
         redisTemplate.opsForHash().put(key, hashKey, hashVal);
     }
+    public void addSet(String setKey, Object setVal) {
+        redisTemplate.opsForSet().add(setKey, setVal);
+    }
+
+    public boolean isSetMember(String setKey, Object setVal) {
+        return redisTemplate.opsForSet().isMember(setKey, setVal);
+    }
 
     /**
      * 获取指定 key 中存储的数字值

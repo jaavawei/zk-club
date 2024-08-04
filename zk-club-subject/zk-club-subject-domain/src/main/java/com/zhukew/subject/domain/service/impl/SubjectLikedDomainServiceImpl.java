@@ -18,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.rocketmq.spring.core.RocketMQTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.*;
@@ -44,14 +45,20 @@ public class SubjectLikedDomainServiceImpl implements SubjectLikedDomainService 
     @Resource
     private RocketMQTemplate rocketMQTemplate;
 
-    // redis中的key常量
-    // SUBJECT_LIKED_KEY：点赞状态的hash总key（用于定时持久化）
+    /**
+     * redis中的key常量
+     * SUBJECT_LIKED_KEY：点赞状态的hash总key（用于定时持久化）
+     */
     private static final String SUBJECT_LIKED_KEY = "subject.liked";
 
-    // SUBJECT_LIKED_COUNT_KEY：题目点赞数量key
+    /**
+     * SUBJECT_LIKED_COUNT_KEY：题目点赞数量key
+     */
     private static final String SUBJECT_LIKED_COUNT_KEY = "subject.liked.count";
 
-    // SUBJECT_LIKED_DETAIL_KEY：一个题目是否被一个用户点赞了（用于读取）
+    /**
+     * SUBJECT_LIKED_DETAIL_KEY：一个题目是否被一个用户点赞了（用于读取）
+     */
     private static final String SUBJECT_LIKED_DETAIL_KEY = "subject.liked.detail";
 
     /**
@@ -67,11 +74,13 @@ public class SubjectLikedDomainServiceImpl implements SubjectLikedDomainService 
          String hashKey = buildSubjectLikedKey(subjectId.toString(), likeUserId);
          redisUtil.putHash(SUBJECT_LIKED_KEY, hashKey, status);*/
 
-        // 封装 题目id，点赞人，点赞状态（点赞或取消） 等信息到SubjectLikedMessage中
+        // 封装 题目id，点赞人，点赞状态（点赞或取消），messageId 等信息到SubjectLikedMessage中
         SubjectLikedMessage subjectLikedMessage = new SubjectLikedMessage();
         subjectLikedMessage.setSubjectId(subjectId);
         subjectLikedMessage.setLikeUserId(likeUserId);
         subjectLikedMessage.setStatus(status);
+        String uuid = UUID.randomUUID().toString().replace("_", "");
+        subjectLikedMessage.setId(uuid);
 
         // 原本将点赞信息完整地存储在 redis hash 中，然后利用 xxl-job 定时进行持久化
         // 但是 redis 故障可能会丢失信息，改用 rocketMQ 异步直接将点赞信息存储到数据库

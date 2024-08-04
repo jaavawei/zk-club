@@ -22,6 +22,11 @@
     <dependencies>
         <dependency>
             <groupId>com.zhukew</groupId>
+            <artifactId>zk-club-subject-infra</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.zhukew</groupId>
             <artifactId>zk-club-subject-domain</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>

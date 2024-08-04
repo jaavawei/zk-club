@@ -126,6 +126,7 @@ public class AlBLInterviewEngine implements InterviewEngine {
     private static InterviewSubmitReq.Submit buildInterviewScore(InterviewSubmitReq.Submit submit) {
         long start = System.currentTimeMillis();
         Map<String, Object> reqMap = new HashMap<>();
+        // 将请求参数封装成指定格式
         JSONObject jsonData = new JSONObject();
         jsonData.put("model", "qwen1.5-110b-chat");
         JSONObject input = new JSONObject();

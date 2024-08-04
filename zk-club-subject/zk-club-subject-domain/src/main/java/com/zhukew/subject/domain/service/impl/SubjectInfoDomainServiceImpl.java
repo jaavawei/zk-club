@@ -63,7 +63,7 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
     private static final String RANK_KEY = "subject_rank";
 
     /**
-     * 添加题目
+     * 添加题目，同步es与redis操作由mq消费者完成
      */
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -96,6 +96,12 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
         });
         subjectMappingService.batchInsert(mappingList);
 
+
+    }
+
+    @Override
+    public void syncAddByMsg(SubjectInfoBO subjectInfoBO) {
+        SubjectInfo subjectInfo = SubjectInfoConverter.INSTANCE.convertBoToInfo(subjectInfoBO);
         //将题目同步到es中
         SubjectInfoEs subjectInfoEs = new SubjectInfoEs();
         subjectInfoEs.setDocId(new IdWorkerUtil(1, 1, 1).nextId());
@@ -106,10 +112,10 @@ public class SubjectInfoDomainServiceImpl implements SubjectInfoDomainService {
         subjectInfoEs.setSubjectName(subjectInfo.getSubjectName());
         subjectInfoEs.setSubjectType(subjectInfo.getSubjectType());
         subjectEsService.insert(subjectInfoEs);
-
         //存入redis中，用于计算贡献排行榜
         redisUtil.addScore(RANK_KEY, LoginUtil.getLoginId(), 1);
     }
+
 
     /**
      * 分页查询题目
