@@ -23,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 /**
  * 词库上下文环境
  * 初始化敏感词库，将敏感词加入到HashMap中，构建DFA算法模型
- *
- * @author minghu.zhang
  */
 @SuppressWarnings({"rawtypes", "unchecked"})
 @Slf4j
@@ -130,8 +128,6 @@ public class WordContext {
 
     /**
      * 获取初始化的敏感词列表
-     *
-     * @return 敏感词列表
      */
     public Map getWordMap() {
         return wordMap;

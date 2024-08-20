@@ -9,8 +9,6 @@ import java.util.Objects;
 
 /**
  * 敏感词过滤器
- *
- * @author minghu.zhang
  */
 @SuppressWarnings("rawtypes")
 public class WordFilter {

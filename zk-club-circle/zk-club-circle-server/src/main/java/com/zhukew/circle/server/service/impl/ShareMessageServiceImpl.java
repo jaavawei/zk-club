@@ -18,7 +18,7 @@ import com.zhukew.circle.server.entity.po.ShareMessage;
 import com.zhukew.circle.server.rpc.UserRpc;
 import com.zhukew.circle.server.service.ShareMessageService;
 import com.zhukew.circle.server.util.LoginUtil;
-import com.zhukew.circle.server.websocket.ChickenSocket;
+import com.zhukew.circle.server.websocket.ZhuKeSocket;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -39,7 +39,7 @@ import java.util.stream.Collectors;
 public class ShareMessageServiceImpl extends ServiceImpl<ShareMessageMapper, ShareMessage> implements ShareMessageService {
 
     @Resource
-    private ChickenSocket chickenSocket;
+    private ZhuKeSocket zhuKeSocket;
     @Resource
     private UserRpc userRpc;
 
@@ -92,9 +92,9 @@ public class ShareMessageServiceImpl extends ServiceImpl<ShareMessageMapper, Sha
         shareMessage.setCreatedBy(fromId);
         shareMessage.setCreatedTime(new Date());
         shareMessage.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
-        ChickenSocket socket = chickenSocket.getChickenSocket(toId);
+        ZhuKeSocket socket = zhuKeSocket.getZhuKeSocket(toId);
         if (Objects.nonNull(socket)) {
-            chickenSocket.sendMessage(shareMessage.getContent(), socket.getSession());
+            zhuKeSocket.sendMessage(shareMessage.getContent(), socket.getSession());
         }
         super.save(shareMessage);
 
@@ -116,9 +116,9 @@ public class ShareMessageServiceImpl extends ServiceImpl<ShareMessageMapper, Sha
         shareMessage.setCreatedBy(fromId);
         shareMessage.setCreatedTime(new Date());
         shareMessage.setIsDeleted(IsDeletedFlagEnum.UN_DELETED.getCode());
-        ChickenSocket socket = chickenSocket.getChickenSocket(toId);
+        ZhuKeSocket socket = zhuKeSocket.getZhuKeSocket(toId);
         if (Objects.nonNull(socket)) {
-            chickenSocket.sendMessage(shareMessage.getContent(), socket.getSession());
+            zhuKeSocket.sendMessage(shareMessage.getContent(), socket.getSession());
         }
         super.save(shareMessage);
 

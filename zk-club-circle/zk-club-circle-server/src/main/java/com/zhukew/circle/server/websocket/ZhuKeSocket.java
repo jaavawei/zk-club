@@ -14,7 +14,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Slf4j
 @ServerEndpoint(value = "/chicken/socket", configurator = WebSocketServerConfig.class)
 @Component
-public class ChickenSocket {
+public class ZhuKeSocket {
 
     /**
      * 记录当前在线连接数
@@ -24,7 +24,7 @@ public class ChickenSocket {
     /**
      * 存放所有在线的客户端
      */
-    private static final Map<String, ChickenSocket> clients = new ConcurrentHashMap<>();
+    private static final Map<String, ZhuKeSocket> clients = new ConcurrentHashMap<>();
 
     /**
      * 与某个客户端的连接会话，需要通过它来给客户端发送数据
@@ -120,9 +120,9 @@ public class ChickenSocket {
      * 群发消息
      */
     public void sendMessage(String message) {
-        for (Map.Entry<String, ChickenSocket> sessionEntry : clients.entrySet()) {
+        for (Map.Entry<String, ZhuKeSocket> sessionEntry : clients.entrySet()) {
             String erp = sessionEntry.getKey();
-            ChickenSocket socket = sessionEntry.getValue();
+            ZhuKeSocket socket = sessionEntry.getValue();
             Session session = socket.session;
             log.info("服务端给客户端[{}]发送消息{}", erp, message);
             try {
@@ -133,7 +133,7 @@ public class ChickenSocket {
         }
     }
 
-    public ChickenSocket getChickenSocket(String userName) {
+    public ZhuKeSocket getZhuKeSocket(String userName) {
         return clients.get(userName);
     }
 

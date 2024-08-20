@@ -29,11 +29,6 @@ public class CallBackController {
     @Resource
     private WxChatMsgFactory wxChatMsgFactory;
 
-    @RequestMapping("/test")
-    public String test() {
-        return "hello world";
-    }
-
     /**
      * 回调消息校验
      */

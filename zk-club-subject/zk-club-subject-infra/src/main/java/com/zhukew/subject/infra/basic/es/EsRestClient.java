@@ -50,7 +50,7 @@ import java.util.*;
 public class EsRestClient {
 
     /**
-    * esClientName: Client
+    * 集群名 : Client
     */
     public static Map<String, RestHighLevelClient> clientMap = new HashMap<>();
 
