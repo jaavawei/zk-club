@@ -3,22 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/zk-club.iml" filepath="$PROJECT_DIR$/zk-club.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-auth/zk-club-auth-api/zk-club-auth-api.iml" filepath="$PROJECT_DIR$/zk-club-auth/zk-club-auth-api/zk-club-auth-api.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-auth/zk-club-auth-common/zk-club-auth-common.iml" filepath="$PROJECT_DIR$/zk-club-auth/zk-club-auth-common/zk-club-auth-common.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-auth/zk-club-auth-domain/zk-club-auth-domain.iml" filepath="$PROJECT_DIR$/zk-club-auth/zk-club-auth-domain/zk-club-auth-domain.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-auth/zk-club-auth-infra/zk-club-auth-infra.iml" filepath="$PROJECT_DIR$/zk-club-auth/zk-club-auth-infra/zk-club-auth-infra.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-auth/zk-club-auth-starter/zk-club-auth-starter.iml" filepath="$PROJECT_DIR$/zk-club-auth/zk-club-auth-starter/zk-club-auth-starter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-circle/zk-club-circle-server/zk-club-circle-server.iml" filepath="$PROJECT_DIR$/zk-club-circle/zk-club-circle-server/zk-club-circle-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-gateway/zk-club-gateway.iml" filepath="$PROJECT_DIR$/zk-club-gateway/zk-club-gateway.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-interview/zk-club-interview-server/zk-club-interview-server.iml" filepath="$PROJECT_DIR$/zk-club-interview/zk-club-interview-server/zk-club-interview-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-oss/zk-club-oss.iml" filepath="$PROJECT_DIR$/zk-club-oss/zk-club-oss.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-practice/zk-club-practice-server/zk-club-practice-server.iml" filepath="$PROJECT_DIR$/zk-club-practice/zk-club-practice-server/zk-club-practice-server.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-subject/zk-club-subject-application/zk-club-subject-application-controller/zk-club-subject-application-controller.iml" filepath="$PROJECT_DIR$/zk-club-subject/zk-club-subject-application/zk-club-subject-application-controller/zk-club-subject-application-controller.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-subject/zk-club-subject-application/zk-club-subject-application-mq/zk-club-subject-application-mq.iml" filepath="$PROJECT_DIR$/zk-club-subject/zk-club-subject-application/zk-club-subject-application-mq/zk-club-subject-application-mq.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-subject/zk-club-subject-domain/zk-club-subject-domain.iml" filepath="$PROJECT_DIR$/zk-club-subject/zk-club-subject-domain/zk-club-subject-domain.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-subject/zk-club-subject-infra/zk-club-subject-infra.iml" filepath="$PROJECT_DIR$/zk-club-subject/zk-club-subject-infra/zk-club-subject-infra.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-subject/zk-club-subject-starter/zk-club-subject-starter.iml" filepath="$PROJECT_DIR$/zk-club-subject/zk-club-subject-starter/zk-club-subject-starter.iml" />
-      <module fileurl="file://$PROJECT_DIR$/zk-club-wx/zk-club-wx.iml" filepath="$PROJECT_DIR$/zk-club-wx/zk-club-wx.iml" />
     </modules>
   </component>
 </project>

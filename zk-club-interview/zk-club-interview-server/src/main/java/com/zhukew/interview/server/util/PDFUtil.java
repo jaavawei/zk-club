@@ -9,6 +9,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.regex.Pattern;
 
+/**
+ * pdf解析工具类
+ *
+ * @auther: Wei
+ */
 @Slf4j
 public class PDFUtil {
 

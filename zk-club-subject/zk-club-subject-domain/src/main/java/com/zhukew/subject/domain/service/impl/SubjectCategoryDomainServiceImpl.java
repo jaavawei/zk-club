@@ -122,12 +122,12 @@ public class SubjectCategoryDomainServiceImpl implements SubjectCategoryDomainSe
         List<SubjectCategoryBO> categoryBOList = SubjectCategoryConverter.INSTANCE.convertBoToCategory(subjectCategoryList);
         // 分类ID ：标签List
         Map<Long, List<SubjectLabelBO>> map = new HashMap<>();
-        // 利用 CompletableFuture对每个标签进行并发查询
+        // 利用 CompletableFuture 对每个标签进行并发查询
         List<CompletableFuture<Map<Long, List<SubjectLabelBO>>>> completableFutureList = categoryBOList.stream().map(category ->
                 CompletableFuture.supplyAsync(() -> getLabelBOList(category), labelThreadPool)
         ).collect(Collectors.toList());
         // 等待所有 CompletableFuture 完成后汇总查询结果
-        CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[0])).thenRun(() -> {
+        CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[completableFutureList.size()])).thenRun(() -> {
             // 拿到每个 CompletableFuture 的查询结果，并合并到 map 中。
             completableFutureList.forEach(future -> {
                 try {

@@ -177,7 +177,7 @@ public class UserController {
     /**
      * 用户申请上传题目权限
      */
-    @RequestMapping("SubjectAddApplication")
+    @RequestMapping("subjectAddApplication")
     public Result<Boolean> subjectAddApplication(@RequestBody AuthUserDTO authUserDTO) {
         try {
             if (log.isInfoEnabled()) {

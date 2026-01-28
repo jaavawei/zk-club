@@ -197,8 +197,8 @@ public class RedisUtil {
         Map<Object, Object> map = new HashMap<>();
         // Cursor：继承了 Iterator
         // Redis SCAN：基于游标的迭代器
+        // 使用 SCAN 扫描出了指定 Hash 中的所有键值对
         Cursor<Map.Entry<Object, Object>> cursor = redisTemplate.opsForHash().scan(key, ScanOptions.NONE);
-        // 事实上只会命中一项数据，即想要的 hash 中的数据
         while (cursor.hasNext()) {
             Map.Entry<Object, Object> entry = cursor.next();
             Object hashKey = entry.getKey();
